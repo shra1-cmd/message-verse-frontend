@@ -1,12 +1,6 @@
 
 import { supabase, Message } from '@/lib/supabase';
 
-export interface Message {
-  id: string;
-  text: string;
-  timestamp: string;
-}
-
 export const fetchMessages = async (): Promise<Message[]> => {
   const { data, error } = await supabase
     .from('messages')
