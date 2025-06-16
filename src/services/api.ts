@@ -3,7 +3,7 @@ import { supabase, Message } from '@/lib/supabase';
 
 export const fetchMessages = async (): Promise<Message[]> => {
   const { data, error } = await supabase
-    .from('messages')
+    .from('user_messages')
     .select('*')
     .order('timestamp', { ascending: true });
 
@@ -22,7 +22,7 @@ export const sendMessage = async (text: string): Promise<Message> => {
   };
 
   const { data, error } = await supabase
-    .from('messages')
+    .from('user_messages')
     .insert([message])
     .select()
     .single();
