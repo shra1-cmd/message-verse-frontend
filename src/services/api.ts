@@ -1,14 +1,5 @@
 
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+import { supabase, Message } from '@/lib/supabase';
 
 export interface Message {
   id: string;
@@ -17,13 +8,35 @@ export interface Message {
 }
 
 export const fetchMessages = async (): Promise<Message[]> => {
-  const response = await api.get('/messages');
-  return response.data;
+  const { data, error } = await supabase
+    .from('messages')
+    .select('*')
+    .order('timestamp', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching messages:', error);
+    throw new Error('Failed to fetch messages');
+  }
+
+  return data || [];
 };
 
 export const sendMessage = async (text: string): Promise<Message> => {
-  const response = await api.post('/messages', { text });
-  return response.data;
-};
+  const message = {
+    text,
+    timestamp: new Date().toISOString(),
+  };
 
-export default api;
+  const { data, error } = await supabase
+    .from('messages')
+    .insert([message])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error sending message:', error);
+    throw new Error('Failed to send message');
+  }
+
+  return data;
+};
