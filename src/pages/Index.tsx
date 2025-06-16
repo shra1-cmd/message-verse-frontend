@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { fetchMessages, sendMessage, Message } from '@/services/api';
+import { fetchMessages, sendMessage } from '@/services/api';
+import { Message } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import MessageInput from '@/components/MessageInput';
 import MessageList from '@/components/MessageList';

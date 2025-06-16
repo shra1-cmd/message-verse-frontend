@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Message } from '@/services/api';
+import { Message } from '@/lib/supabase';
 
 interface MessageListProps {
   messages: Message[];
